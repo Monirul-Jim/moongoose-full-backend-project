@@ -1,7 +1,7 @@
 import express from 'express';
-import { StudentControllers } from './student.controller';
+import { StudentController } from './student.controller';
 const router = express.Router();
-router.post('/create-student', StudentControllers.createStudent);
-router.get('/', StudentControllers.getAllStudents);
-router.get('/:studentId', StudentControllers.getSingleStudents);
+router.post('/create-student', StudentController.createStudent);
+router.get('/', StudentController.getAllStudents);
+router.get('/:studentId', StudentController.getSingleStudent);
 export const StudentRoutes = router;
