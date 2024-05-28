@@ -1,8 +1,11 @@
 // interface->schema->model->db-query
+
+import { Model } from 'mongoose';
+
 // interface->model->service-controller
 export type UserName = {
   firstName: string;
-  middleName: string;
+  middleName?: string;
   lastName: string;
 };
 export type Guardian = {
@@ -22,7 +25,7 @@ export type localGuardian = {
 export type Student = {
   id: string;
   name: UserName;
-  gender: 'male' | 'female' | 'not interested';
+  gender: 'male' | 'female' | 'other';
   email: string;
   dateOfBirth?: string;
   contactNumber: string;
@@ -35,3 +38,12 @@ export type Student = {
   profileImg?: string;
   isActive: 'active' | 'blocked';
 };
+// static methods
+export type studentMethods = {
+  isUserExists(id: string): Promise<Student>;
+};
+export type StudentModel = Model<
+  Student,
+  Record<string, never>,
+  studentMethods
+>;
