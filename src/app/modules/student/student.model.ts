@@ -67,7 +67,6 @@ const studentSchema = new Schema<TStudent, StudentModel>({
   password: {
     type: String,
     required: [true, 'student password required '],
-    unique: true,
     maxLength: [20, 'password cannot be more than 20 character'],
   },
   name: {
@@ -116,6 +115,10 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     enum: ['active', 'blocked'],
     default: 'active',
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 // ===>pre save middleware/hook ==> here i use this for hash the password to the database
 studentSchema.pre('save', async function (next) {
@@ -129,14 +132,32 @@ studentSchema.pre('save', async function (next) {
   next();
 });
 //===> post middleware
-studentSchema.post('save', function () {
-  console.log(this, 'post hook : we will save our data');
+studentSchema.post('save', function (doc, next) {
+  doc.password = '';
+
+  next();
 });
 // =>create a custom instance method
 // studentSchema.methods.isUserExists = async function (id: string) {
 //   const existingUser = await Student.findOne({ id });
 //   return existingUser;
 // };
+//==>Query middleware ->get all student from db but before apply one query that deleted student is not show in user site
+studentSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+// =>this work for findOne and this relation is related to student.service.ts
+studentSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+// =>this work for aggregate and this relation is related to student.service.ts
+// studentSchema.pre('aggregate', function (next) {
+// this.pipeline().unshift({$match:{isDeleted:{$ne:true}}})
+//   next();
+// });
+
 // =>create a custom static method
 studentSchema.statics.isUserExists = async function (id: string) {
   const existingUser = await Student.findOne({ id });
