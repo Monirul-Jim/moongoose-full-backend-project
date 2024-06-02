@@ -1,6 +1,6 @@
 // interface->schema->model->db-query
 
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 // interface->model->service-controller
 export type TUserName = {
@@ -24,7 +24,7 @@ export type TLocalGuardian = {
 };
 export type TStudent = {
   id: string;
-  password: string;
+  user: Types.ObjectId;
   name: TUserName;
   gender: 'male' | 'female' | 'other';
   email: string;
@@ -37,7 +37,6 @@ export type TStudent = {
   guardian: TGuardian;
   localGuardian: TLocalGuardian;
   profileImg?: string;
-  isActive: 'active' | 'blocked';
   isDeleted: boolean;
 };
 // create s custom static method -> for create instance
