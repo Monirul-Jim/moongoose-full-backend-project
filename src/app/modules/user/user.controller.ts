@@ -1,4 +1,3 @@
-import { RequestHandler } from 'express';
 import { UserService } from './user.service';
 import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
