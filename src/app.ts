@@ -3,7 +3,7 @@
 import express, { NextFunction, Application, Request, Response } from 'express';
 import cors from 'cors';
 import { StudentRoutes } from './app/modules/student/student.routes';
-import { UserRoutes } from './app/modules/user/student.routes';
+import { UserRoutes } from './app/modules/user/user.routes';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import notFound from './app/middlewares/notFound';
 import router from './app/routes';
